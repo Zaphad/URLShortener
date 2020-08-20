@@ -1,0 +1,33 @@
+﻿@model URLShortener.Models.URLLink
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container bg-light border-1 mt-5 rounded" @Html.Raw(Model is null?"":"hidden")>
+    <form class="mb-5 text-center">
+        <div class="form-group">
+            <label class="display-4 mb-4">So you decide to create a new link</label>
+            <input type="text" class="form-control display-5 form-control-lg mb-4" name="longUrl" placeholder="Your long url goes here" />
+        </div>
+        <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="Create new shorten link">
+    </form>
+</div>
+<div class="container bg-light border-1 mt-5 rounded" @Html.Raw(Model is null?"hidden":"")>
+    <form class="mb-5 text-center">
+        <div class="form-group">
+            <label class="display-4 mb-4">This was your long url</label>
+            <a class="form-control display-5 form-control-lg mb-4 text-decoration-none" name="shorten" href="@Html.DisplayFor(model=>model.LongUrl)" target="_blank">@Html.DisplayFor(model => model.LongUrl)</a>
+        </div>
+        <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="Create new shorten link" hidden>
+    </form>
+    <form class="mb-5 text-center pb-3 bg-light border-1 px-3 rounded-bottom">
+        <div class="form-group">
+            <label class="display-4 mb-4">Here is your shortened url:</label>
+            <a class="form-control display-5 form-control-lg mb-4 text-decoration-none" name="shorten" href="@Html.DisplayFor(model=>model.ShortenedUrl)" target="_blank">@Html.DisplayFor(model => model.ShortenedUrl)</a>
+            <input type="number" name="id" value="@Html.DisplayFor(model=>model.ID)" hidden/>
+        </div>
+        <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="I don't like! Change it" placeholder="I don't like! Change it">
+    </form>
+</div>
+<form>
+    <input type="button" class="btn btn-dark btn-lg mb-3" value="Back to main page" onclick="location.href='@Url.Action("Index", "Home")'" />
+</form>

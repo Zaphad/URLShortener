@@ -1,0 +1,46 @@
+﻿@model IEnumerable<URLShortener.Models.URLLink>
+@{
+    ViewData["Title"] = "Main";
+}
+<div class="container bg-light border-1 rounded p-3 mb-3">
+    <form class="text-center">
+        <input type="button" class="btn btn-dark btn-lg" value="Create your new shorten link" onclick="location.href='@Url.Action("Create", "Home")'" />
+    </form>
+</div>
+<div class="table-responsive"  @Html.Raw(Model != null && Model.Any()?"":"hidden")>
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Long url</th>
+                <th>Shortened url</th>
+                <th>Creation date</th>
+                <th>Number of transitions</th>
+                <th></th>
+            </tr>
+        </thead>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="text-decoration-none" href="@Html.DisplayFor(modelItem => item.LongUrl)" target="_blank">@Html.DisplayFor(modelItem => item.LongUrl)</a>
+                    </td>
+                    <td>
+                        <a class="text-decoration-none" href="@Html.DisplayFor(modelItem => item.ShortenedUrl)" target="_blank">@Html.DisplayFor(modelItem => item.ShortenedUrl)</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreationDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LinkFollowCount)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Delete","Delete", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
