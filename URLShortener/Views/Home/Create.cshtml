@@ -2,7 +2,12 @@
 @{
     ViewData["Title"] = "Create";
 }
-<div class="container bg-light border-1 mt-5 rounded" @Html.Raw(Model is null?"":"hidden")>
+<div class="container mt-3 position-absolute">
+    <form>
+        <input type="button" class="btn btn-dark btn-lg mb-3" value="Back to main page" onclick="location.href='@Url.Action("Index", "Home")'" />
+    </form>
+</div>
+<div class="container bg-light border-1 rounded pt-5" @Html.Raw(Model is null?"":"hidden")>
     <form class="mb-5 text-center">
         <div class="form-group">
             <label class="display-4 mb-4">So you decide to create a new link</label>
@@ -11,7 +16,7 @@
         <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="Create new shorten link">
     </form>
 </div>
-<div class="container bg-light border-1 mt-5 rounded" @Html.Raw(Model is null?"hidden":"")>
+<div class="container bg-light border-1 rounded pt-5" @Html.Raw(Model is null?"hidden":"")>
     <form class="mb-5 text-center">
         <div class="form-group">
             <label class="display-4 mb-4">This was your long url</label>
@@ -28,6 +33,3 @@
         <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="I don't like! Change it" placeholder="I don't like! Change it">
     </form>
 </div>
-<form>
-    <input type="button" class="btn btn-dark btn-lg mb-3" value="Back to main page" onclick="location.href='@Url.Action("Index", "Home")'" />
-</form>

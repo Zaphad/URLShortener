@@ -4,9 +4,7 @@ namespace URLShortener.Models
 {
     public class URLLinkContext : DbContext
     {  
-        public URLLinkContext(DbContextOptions<URLLinkContext> options) : base(options) {
-            
-        }
+        public URLLinkContext(DbContextOptions<URLLinkContext> options) : base(options) {}
         public DbSet<URLLink> URLLinks { get; set; }
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);

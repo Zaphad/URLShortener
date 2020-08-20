@@ -2,8 +2,11 @@
 @{
     ViewData["Title"] = "Main";
 }
-<div class="container bg-light border-1 rounded p-3 mb-3">
+<div class="container bg-light border-1 rounded p-3 m-auto">
     <form class="text-center">
+        <label class="display-4 mb-4">On this site you can create a shortened version of long and uncomfortable link and track the number of transitions</label>
+        <label class="display-4 mb-4">Just click the button below to try</label>
+        <br />
         <input type="button" class="btn btn-dark btn-lg" value="Create your new shorten link" onclick="location.href='@Url.Action("Create", "Home")'" />
     </form>
 </div>

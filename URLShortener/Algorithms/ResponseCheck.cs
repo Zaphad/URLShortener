@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace URLShortener.Algorithms
 {
     public class ResponseCheck
     {
-        [Obsolete("CheckOnResponseAsync is deprecated, please use CheckOnResponse instead.")]
-        public static async Task<bool> CheckOnResponseAsync(string url){
+        public static bool CheckOnResponseAsync(string url){
             if (url == null || !LinkResponseCheck(url)) {
                 return false;
             }
-            HttpClient client = new HttpClient();
-            var checkingResponse = await client.GetAsync(url);
-            if (!checkingResponse.IsSuccessStatusCode)
+            try
             {
-               return false;
+                WebRequest.Create(new Uri(url)).GetResponse();
             }
-        return true;
+            catch (Exception){
+                return false;
+            }
+            return true;
         }
         public static bool LinkResponseCheck(string url)
         {

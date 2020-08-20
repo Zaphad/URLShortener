@@ -2,7 +2,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<div class="container  mt-5 ">
+<div class="container mt-3 position-absolute">
+    <form>
+        <input type="button" class="btn btn-dark btn-lg mb-3" value="Back to main page" onclick="location.href='@Url.Action("Index", "Home")'" />
+    </form>
+</div>
+<div class="container pt-5">
     <form class="mb-5 text-center bg-light border-1 pb-3 px-3 rounded-top">
         <div class="form-group">
             <label class="display-4 mb-4">Change the core url</label>
@@ -20,7 +25,3 @@
         <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="generateNewLink" placeholder="Generate new link">
     </form>
 </div>
-<form>
-    <input type="button" class="btn btn-dark btn-lg mb-3" value="Create new link" onclick="location.href='@Url.Action("Create", "Home")'" />
-    <input type="button" class="btn btn-dark btn-lg mb-3" value="Back to main page" onclick="location.href='@Url.Action("Index", "Home")'" />
-</form>

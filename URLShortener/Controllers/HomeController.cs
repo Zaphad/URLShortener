@@ -25,7 +25,7 @@ namespace URLShortener.Controllers
         public IActionResult Edit(int? id,string longUrl,string submitButton) {
             if (id != null)
             {
-                if (_context.URLLinks.Find(id) == null)
+                if (_context.URLLinks.Find(id) is null)
                 {
                     return StatusCode(404);
                 }
@@ -34,9 +34,14 @@ namespace URLShortener.Controllers
                 if (submitButton.Equals("changeCoreUrl")) {
                         if (longUrl != null)
                         {
-                            if (!ResponseCheck.LinkResponseCheck(longUrl))
+                            if (!ResponseCheck.CheckOnResponseAsync(longUrl))
                             {
-                                return RedirectToAction("RequestErr","Error");
+                                return RedirectToAction("Input", "Error");
+                            }
+                            foreach (URLLink u in _context.URLLinks) {
+                                if (u.LongUrl == longUrl) {
+                                    return View("Edit", _context.URLLinks.Find(id));
+                                }
                             }
                             _context.URLLinks.Find(id).LongUrl = longUrl;
                             _context.SaveChanges();
@@ -59,7 +64,7 @@ namespace URLShortener.Controllers
             URLLink urlLink;
             if (longUrl != null)
             {
-                if (!ResponseCheck.LinkResponseCheck(longUrl))
+                if (!ResponseCheck.CheckOnResponseAsync(longUrl))
                 {
                     return RedirectToAction("Input", "Error");
                 }
@@ -85,7 +90,7 @@ namespace URLShortener.Controllers
         [HttpGet, Route("/{token}")]
         public IActionResult RedirectByShortUrl([FromRoute] string token)
         {
-            string urlForRedirect = $"{Shortener.BaseUrl()}Error/Redirect";
+            string urlForRedirect = $"{Shortener.BaseUrl()}";
             foreach (URLLink u in _context.URLLinks) {
                 if (u.Token == token) {
                     urlForRedirect = u.LongUrl;
