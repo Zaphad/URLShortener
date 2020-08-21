@@ -13,15 +13,15 @@
             <label class="display-4 mb-4">Change the core url</label>
             <input type="text" class="form-control display-5 form-control-lg mb-4" name="longUrl" placeholder="Your new long url goes here" />
         </div>
-        <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="changeCoreUrl" placeholder="Change core url">
+        <input class="btn btn-dark btn-lg mb-3" type="submit" name="changeCoreUrl" value="Change core url">
     </form>
     <h1 class="text-center display-3 mb-5">Or</h1>
     <form class="mb-5 text-center pb-3 bg-light border-1 px-3 rounded-bottom">
         <div class="form-group">
             <label class="display-4 mb-4">Get a new shorten link</label>
-            <h4 class="display-4">Your prewious shortened url:</h4>
+            <p class="display-4">Your prewious shortened url:</p>
             <a class="form-control display-5 form-control-lg mb-4 d-inline text-decoration-none" name="shortenedUrl" href="@Html.DisplayFor(model=>model.ShortenedUrl)" target="_blank">@Html.DisplayFor(model => model.ShortenedUrl)</a>
         </div>
-        <input class="btn btn-dark btn-lg mb-3" type="submit" name="submitButton" value="generateNewLink" placeholder="Generate new link">
+        <input class="btn btn-dark btn-lg mb-3" type="submit" name="generateNewLink" value="Generate new link">
     </form>
 </div>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using URLShortener.Algorithms;
 using URLShortener.Models;
@@ -17,37 +18,39 @@ namespace URLShortener.Controllers
             _logger = logger;
             _context = context;
             shortener = new Shortener(httpContextAccessor);
+
         }
         public IActionResult Index()
         {
             return View(_context.URLLinks.ToList());
         }
-        public IActionResult Edit(int? id,string longUrl,string submitButton) {
+        public IActionResult Edit(int? id,string longUrl,string changeCoreUrl, string generateNewLink) {
             if (id != null)
             {
                 if (_context.URLLinks.Find(id) is null)
                 {
+                    _logger.LogError("Attempt to reach edit page using corrupted id at " + DateTime.Now);
                     return StatusCode(404);
                 }
             }
-            if (submitButton!=null) { 
-                if (submitButton.Equals("changeCoreUrl")) {
-                        if (longUrl != null)
+                if (!string.IsNullOrEmpty(changeCoreUrl)) {
+                    if (longUrl != null)
+                    {
+                        if (!ResponseCheck.CheckOnResponseAsync(longUrl))
                         {
-                            if (!ResponseCheck.CheckOnResponseAsync(longUrl))
-                            {
-                                return RedirectToAction("Input", "Error");
-                            }
-                            foreach (URLLink u in _context.URLLinks) {
-                                if (u.LongUrl == longUrl) {
-                                    return View("Edit", _context.URLLinks.Find(id));
-                                }
-                            }
-                            _context.URLLinks.Find(id).LongUrl = longUrl;
-                            _context.SaveChanges();
+                            _logger.LogError("Not valid url was send at " + DateTime.Now);
+                            return RedirectToAction("Input", "Error");
                         }
+                        foreach (URLLink u in _context.URLLinks) {
+                            if (u.LongUrl == longUrl) {
+                                return View("Edit", _context.URLLinks.Find(id));
+                            }
+                        }
+                        _context.URLLinks.Find(id).LongUrl = longUrl;
+                        _context.SaveChanges();
+                    }
                 }
-                if (submitButton.Equals("generateNewLink")) { 
+                if (!string.IsNullOrEmpty(generateNewLink)) { 
                     URLLink urlLink;
                     if ((urlLink = shortener.ShortenedUrl(_context.URLLinks.Find(id).LongUrl, _context, true)) != null)
                     {
@@ -57,7 +60,7 @@ namespace URLShortener.Controllers
                         _context.SaveChanges();
                     }
                 }
-            }
+            
             return View("Edit",_context.URLLinks.Find(id));
         }
         public IActionResult Create(string longUrl, string submitButton, int? id) {
@@ -66,6 +69,7 @@ namespace URLShortener.Controllers
             {
                 if (!ResponseCheck.CheckOnResponseAsync(longUrl))
                 {
+                    _logger.LogError("Not valid url was send at " + DateTime.Now);
                     return RedirectToAction("Input", "Error");
                 }
                 if ((urlLink = shortener.ShortenedUrl(longUrl, _context, false)) != null)
@@ -98,6 +102,7 @@ namespace URLShortener.Controllers
                 }
             }
             _context.SaveChanges();
+            _logger.LogError("Attempt to redirect with corrupted token at " + DateTime.Now);
             return Redirect(urlForRedirect);
         }
         public IActionResult Delete(int? id) {

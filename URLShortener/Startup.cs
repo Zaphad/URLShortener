@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Data.SqlClient;
 using URLShortener.Models;
 
 namespace URLShortener
@@ -15,19 +16,19 @@ namespace URLShortener
             Configuration = configuration;
         }
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("ConnectionToShortenedUrlDB"));
+            builder.UserID = Configuration["DbUserId"];
+            builder.Password = Configuration["DbPassword"];
+
             services.AddDbContext<URLLinkContext>(options =>{
-                options.UseMySql(Configuration.GetConnectionString("ConnectionToShortenedUrlDB"));
+                options.UseMySql(builder.ConnectionString);
             });
 
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -37,7 +38,6 @@ namespace URLShortener
             else
             {
                 app.UseExceptionHandler("/Error/RequestErr");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

@@ -10,17 +10,5 @@ namespace URLShortener.Models
         public string ShortenedUrl { get; set; }
         public DateTime CreationDate { get; set; }
         public int LinkFollowCount {get; set;}
-
-        public bool Empty
-        {
-            get
-            {
-                return (ID == 0 &&
-                        string.IsNullOrWhiteSpace(LongUrl) &&
-                        string.IsNullOrWhiteSpace(ShortenedUrl) &&
-                        CreationDate == DateTime.MinValue &&
-                        LinkFollowCount == 0);
-            }
-        }
     }
 }
